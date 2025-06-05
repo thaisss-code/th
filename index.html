@@ -1,84 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pháo hoa theo vị trí chuột</title>
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background-color: #000;
-      overflow: hidden;
-      font-family: sans-serif;
+<script src="https://unpkg.com/fireworks-js@2.9.2/dist/fireworks.js"></script>
+<script>
+  const container = document.getElementById('canvas-container');
+
+  const fireworks = new Fireworks.default(container, {
+    hue: { min: 0, max: 360 },
+    delay: { min: 15, max: 30 },
+    speed: 2,
+    acceleration: 1.05,
+    friction: 0.97,
+    gravity: 1.5,
+    particles: 55,
+    trace: 3,
+    explosion: 5,
+    autoresize: true,
+    brightness: {
+      min: 50,
+      max: 80,
+      decay: { min: 0.015, max: 0.03 }
+    },
+    sound: {
+      enabled: false
     }
+  });
 
-    #canvas-container {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
+  // 🔥 Phải start hệ thống trước
+  fireworks.start();
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      display: block;
-    }
+  // Click chuột để bắn pháo tại vị trí click
+  container.addEventListener('click', (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    .instructions {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 18px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px 20px;
-      border-radius: 8px;
-      z-index: 2;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="canvas-container">
-    <div class="instructions">💥 Click chuột vào bất kỳ đâu để bắn pháo hoa!</div>
-  </div>
-
-  <script src="https://unpkg.com/fireworks-js@2.9.2/dist/fireworks.js"></script>
-  <script>
-    const container = document.getElementById('canvas-container');
-
-    const fireworks = new Fireworks.default(container, {
-      hue: { min: 0, max: 360 },
-      delay: { min: 15, max: 30 },
-      speed: 2,
-      acceleration: 1.05,
-      friction: 0.97,
-      gravity: 1.5,
-      particles: 55,
-      trace: 3,
-      explosion: 5,
-      autoresize: true,
-      brightness: {
-        min: 50,
-        max: 80,
-        decay: { min: 0.015, max: 0.03 }
-      },
-      sound: {
-        enabled: false
-      }
-    });
-
-    // Gắn sự kiện click chuột để bắn pháo tại đúng vị trí
-    container.addEventListener('click', (e) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      fireworks.fire({ x, y });
-    });
-  </script>
-
-</body>
-</html>
+    fireworks.fire({ x, y });
+  });
+</script>
